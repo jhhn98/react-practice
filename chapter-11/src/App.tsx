@@ -50,6 +50,7 @@ export default function App() {
 }
 */
 // 11.3.3 상태 변경 함수를 콜백 함수 형태로 사용하기
+/*
 import { useCallback, useState } from 'react'
 import A from './components/A'
 
@@ -62,6 +63,44 @@ export default function App() {
     <>
       <h1>App Count: {count}</h1>
       <A increment={increment} />
+    </>
+  )
+}
+*/
+//11.4.1 연산 비용이 큰 작업의 성능 저하 문제
+{/*
+import { useState } from 'react'
+import { initialItems } from './lib/utils'
+
+export default function App() {
+  // 상태 정의
+  const [count, setCount] = useState(0)
+  // 29,999,999개 항목 중 selected가 true인 항목 찾기. 속도가 정말 다르다. 
+  const selectItems = initialItems.find((item) => item.selected)
+  return (
+    <>
+      <h1>Count: {count}</h1>
+      <button onClick={() => setCount((prevCount) => (prevCount + 1))}>increment</button>
+      // 연산 비용이 높은 코드
+      <p>{selectItems?.id}</p>
+    </>
+  )
+}
+*/}
+// 11.4.2 useMemo 훅 사용하기
+import { useMemo, useState } from 'react'
+import { initialItems } from './lib/utils'
+
+export default function App() {
+  // 상태 정의
+  const [count, setCount] = useState(0)
+  // 3천만 개. ㅏㅇ목 중 selected
+  const selectItems = useMemo(() => initialItems.find((item) => item.selected), [])
+  return (
+    <>
+      <h1>Count: {count}</h1>
+      <button onClick={() => setCount((prevCount) => prevCount + 1)}>증가</button>
+      <p>{selectItems?.id}</p>
     </>
   )
 }
