@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useCallback, useState, useEffect } from 'react'
 import TodoHeader from './components/TodoHeader'
 import TodoList from './components/TodoList'
 import TodoEditor from './components/TodoEditor'
@@ -22,22 +22,22 @@ export default function App() {
     ])
   }
   // id, title, done 속성을 가진 객체를 만들어 기존 할 일에 배열에 추가한다. id는 각 항목을 고유하게 식별할 수 있도록 new Date().getTime()을 사용해 현재 시각(밀리초 단위)을 저장한다. 할 일이 아직 완료되지 않은 상태이므로 done은 초깃값을 false로 설정한다. 리액트에서는 상태가 변경되어야만 컴포넌트를 리렌더링하기 때문에 기존 배열을 직접 수정하지 않고 ...todos로 복사해 새로운 배열을 만든 뒤 setTodos()로 설정한다. 이렇게 하면 리액트가 상태의 변화를 정확히 감지하고, 변경된 UI를 올바르게 반영할 수 있다. 또한 상태 업데이트 함수인 setTodos()는 콜백 함수 형태로 작성해 최신 상태를 기반으로 안전하게 새로운 상태를 계산할 수 있도록 한다.
-  const toggleTodo = (id: number) => {
+  const toggleTodo = useCallback((id: number) => {
     setTodos((todos) => 
       todos.map((todo) =>
         todo.id === id ? { ...todo, done: !todo.done } : todo
       )
     )
-  }
+  }, [])
   // toggleTodo() 함수는 특정 할 일의 done 속성을 반전시키는 기능을 수행한다. setTodos() 함수를 호출할 때는 콜백 함수 형태를 사용해 최신 상태를 안전하게 참조한다. map() 메서드로 기존 할 일 배열을 순회하면서 id가 일치하는 항목만 done 값을 반대로 바꾸고, 나머지 항목은 그대로 유지한다. 예를 들어 id가 2인 할 일의 done 값이 false엿다면 true로, true였다면 false로 바꾼다.
-  const deleteTodo = (id: number) => {
+  const deleteTodo = useCallback((id: number) => {
     setTodos((todos) => todos.filter((todo) => todo.id !== id))
-  }
-  const modifyTodo = (id: number, title: string) => {
+  }, [])
+  const modifyTodo = useCallback((id: number, title: string) => {
     setTodos((todos) =>
       todos.map((todo) => (todo.id === id ? { ...todo, title } : todo))
     )
-  }
+  }, [])
   return (
     <div className='todo'>
       <TodoHeader/>

@@ -1,11 +1,11 @@
-import { useState } from 'react'
+import { memo, useState } from 'react'
 import Input from './html/Input'
 import Button from './html/Button'
 import Checkbox from './html/Checkbox'
 import SvgClose from './svg/SvgClose'
 import SvgPencil from './svg/SvgPencil'
 
-export default function TodoListItem({ 
+export default memo(function TodoListItem({ 
     todo, toggleTodo, deleteTodo, modifyTodo
  }: {
     todo: Todo
@@ -22,6 +22,7 @@ export default function TodoListItem({
             modifyTodo(todo.id, modifyTitle)
         }
     }
+    console.log('TodoListItem rendering')
     return (
         // 할 일을 완료하면 .todo__item--complete 추가
         <li className={`todo__item ${todo.done && 'todo__item--complete'}`}>
@@ -38,4 +39,4 @@ export default function TodoListItem({
             </div>
         </li>
     )
-}
+})
